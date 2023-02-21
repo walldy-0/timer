@@ -1,0 +1,12 @@
+@import '../../styles/settings.scss';
+
+.timerForm {
+    border: 2px solid $color-light;
+    display: inline-block;
+    text-align: center;
+
+    h1 {
+        font-size: 48px;
+        font-weight: 100;
+    }
+}
