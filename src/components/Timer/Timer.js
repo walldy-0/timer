@@ -1,24 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './Timer.module.scss';
+import Display from '../Display/Display';
 
 const Timer = () => {
 
-  const [time, setTime] = useState(0);
-  //const [startTime, setStartTime] = useState(0);
+  const [timeElapsed, setTimeElapsed] = useState(0);
   const [timer, setTimer] = useState(undefined);
-  //const [currentTime, setCurretTime] = useState(0);
+
+  let prevTime = 0;
 
   const getCurrentTime = () => (new Date()).getTime();
 
   const startClick = e => {
     e.preventDefault();
-
-    const start = getCurrentTime();
-    setTime(start);
+    
+    prevTime = getCurrentTime();
 
     setTimer(setInterval(() => {
-    setTime(() => getCurrentTime() - start);
-    }, 100));
+      const currTime = getCurrentTime();
+      const diff = currTime - prevTime;
+      prevTime = currTime;
+
+      setTimeElapsed(prev => prev + diff);
+    }, 1));
   };
 
   const stopClick = e => {
@@ -32,21 +36,16 @@ const Timer = () => {
   const resetClick = e => {
     e.preventDefault();
     
-    setTime(0);
-  };
-
-  const formatTime = () => {
-
-    return time;
+    setTimeElapsed(0);
   };
 
   return (
-    <form className={styles.timerForm}>
-      <h1>{formatTime()}</h1>
+    <div className={styles.timerForm}>
+      <Display value={timeElapsed} />
       <button onClick={startClick}>start</button>
       <button onClick={stopClick}>stop</button>
       <button onClick={resetClick}>reset</button>
-    </form>
+    </div>
   );
 };
 
